@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Improve My Odds: a plain-spoken helper for everyday choices</title>
+<meta name="description" content="Improve My Odds is a Grok Bot built by Eclipse Engine. Set a goal in your own words, bring it everyday choices, and get an honest read on whether they raise or lower your odds.">
+<meta name="theme-color" content="#1a1508">
+<meta property="og:title" content="Improve My Odds">
+<meta property="og:description" content="Set a goal in your own words. Bring it everyday choices. Get an honest read. Built by Eclipse Engine.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpolygon points='16,8 48,8 60,24 32,58 4,24' fill='%23e0a91b'/%3E%3Cpolygon points='16,8 48,8 42,24 22,24' fill='%23ffe07a'/%3E%3Cpolygon points='4,24 22,24 32,58' fill='%23b8820f'/%3E%3Cpolygon points='60,24 42,24 32,58' fill='%23c9920f'/%3E%3Cpolygon points='22,24 42,24 32,58' fill='%23f2c233'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#15120a; --bg2:#1e1a0f; --card:#241f12; --line:#3a321c;
+    --text:#f6f1e3; --muted:#c9bf9f; --gold:#f2c233; --gold-d:#d9a514; --gold-l:#ffe07a;
+    --radius:14px; --max:1040px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--gold-l)}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+  header.top{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px;color:var(--text);text-decoration:none}
+  .brand svg{width:30px;height:30px}
+  .brand small{display:block;font-weight:500;color:var(--muted);font-size:12px;letter-spacing:.3px}
+  .btn{display:inline-block;background:linear-gradient(180deg,var(--gold-l),var(--gold) 45%,var(--gold-d));
+    color:#1a1406;font-weight:800;text-decoration:none;border-radius:999px;padding:14px 28px;font-size:18px;
+    box-shadow:0 6px 24px rgba(242,194,51,.25),inset 0 1px 0 rgba(255,255,255,.5);border:1px solid #b8860b}
+  .btn:hover{filter:brightness(1.05)} .btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+  .btn.sm{padding:9px 18px;font-size:15px}
+  .hero{text-align:center;padding:40px 0 56px;
+    background:radial-gradient(ellipse at 50% 0%,rgba(242,194,51,.16),transparent 60%)}
+  .gem{width:112px;height:112px;margin:0 auto 18px;display:block;filter:drop-shadow(0 8px 24px rgba(242,194,51,.35))}
+  h1{font-size:clamp(34px,7vw,56px);line-height:1.08;margin:0 0 14px;letter-spacing:-.5px}
+  h1 span{color:var(--gold)}
+  .pitch{font-size:clamp(18px,2.6vw,21px);color:var(--muted);max-width:620px;margin:0 auto 26px}
+  .note{font-size:14px;color:var(--muted);margin-top:14px}
+  section{padding:48px 0;border-top:1px solid var(--line)}
+  h2{font-size:clamp(24px,4vw,32px);margin:0 0 8px}
+  .lede{color:var(--muted);margin:0 0 24px;max-width:680px}
+  .grid{display:grid;gap:14px;grid-template-columns:1fr}
+  @media(min-width:700px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:repeat(3,1fr)}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+  .card h3{margin:0 0 6px;font-size:18px;color:var(--gold-l)}
+  .card p{margin:0;color:var(--text)}
+  .step{display:flex;gap:14px;align-items:flex-start}
+  .num{flex:0 0 36px;height:36px;border-radius:50%;background:var(--gold);color:#1a1406;font-weight:800;
+    display:flex;align-items:center;justify-content:center}
+  .verdicts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .pill{font-size:14px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;color:var(--muted);background:var(--bg2)}
+  ul.wont{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+  ul.wont li{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px 14px 48px;position:relative}
+  ul.wont li::before{content:"";position:absolute;left:18px;top:19px;width:16px;height:16px;border-radius:50%;
+    border:2px solid var(--gold);background:linear-gradient(45deg,transparent 45%,var(--gold) 45%,var(--gold) 55%,transparent 55%)}
+  ul.wont b{color:var(--gold-l)}
+  .help{margin-top:22px;background:var(--bg2);border-left:4px solid var(--gold);border-radius:8px;padding:14px 18px;color:var(--text)}
+  .cta{text-align:center;padding:56px 0}
+  .cta p{color:var(--muted);margin:0 0 22px}
+  footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:14px;text-align:center}
+  footer p{margin:6px 0}
+</style>
+</head>
+<body>
+
+<!-- Original gem artwork, defined once and reused. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="gem" viewBox="0 0 64 64">
+      <polygon points="16,8 48,8 60,24 32,58 4,24" fill="#e0a91b"/>
+      <polygon points="16,8 48,8 42,24 22,24" fill="#ffe07a"/>
+      <polygon points="16,8 22,24 4,24" fill="#f5cd4a"/>
+      <polygon points="48,8 60,24 42,24" fill="#e8b526"/>
+      <polygon points="4,24 22,24 32,58" fill="#b8820f"/>
+      <polygon points="60,24 42,24 32,58" fill="#c9920f"/>
+      <polygon points="22,24 42,24 32,58" fill="#f2c233"/>
+      <polygon points="24,11 34,11 30,17 22,17" fill="#fff6cc" opacity=".75"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#">
+      <svg aria-hidden="true"><use href="#gem"/></svg>
+      <span>Improve My Odds<small>built by Eclipse Engine</small></span>
+    </a>
+    <a class="btn sm" href="https://x.ai/bot/zJNAdJq5w03aPWeegxiwk">Get the bot</a>
+  </header>
+</div>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <svg class="gem" role="img" aria-label="Gold gem"><use href="#gem"/></svg>
+      <h1>Make everyday choices <span>count toward your goal.</span></h1>
+      <p class="pitch">A warm, plain-spoken helper. You set a goal in your own words, and it tells you honestly whether a choice raises your odds, lowers them, or doesn't really matter.</p>
+      <a class="btn" href="https://x.ai/bot/zJNAdJq5w03aPWeegxiwk">Get the bot</a>
+      <p class="note">Runs on Grok Bot. Probabilities, not promises.</p>
+    </div>
+  </div>
+
+  <section id="what">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="lede">It's a daily decision helper, not a life guide. Your goal can be anything, near or far: money, health, a skill, a relationship, a trip, something 20 years out.</p>
+      <div class="grid two">
+        <div class="card"><h3>Names what matters</h3><p>When you set a new long-term goal, it lists the few big factors that decide it, so later answers can point back to them.</p></div>
+        <div class="card"><h3>Quick checks</h3><p>"Is this worth it?" For in-the-moment choices, you get a fast read on the real cost against the gain, measured against your goal.</p></div>
+        <div class="card"><h3>Spots traps</h3><p>It flags scam and lure red flags, like sure-thing returns or fake urgency, and says so plainly.</p></div>
+        <div class="card"><h3>Day plans, when you ask</h3><p>It can shape a day around your goals, weighing time, money, energy, and the people in your life. Step-by-step plans only if you want them.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <p class="lede">Every answer comes down to one question: does this improve my odds of getting what I want, or not?</p>
+      <div class="grid three">
+        <div class="card step"><div class="num">1</div><div><h3>Set a goal</h3><p>In your own words. It never picks, ranks, or pushes a goal for you.</p></div></div>
+        <div class="card step"><div class="num">2</div><div><h3>Bring it choices</h3><p>A purchase, an offer, how to spend an evening, what to do first today.</p></div></div>
+        <div class="card step"><div class="num">3</div><div><h3>Get an honest read</h3><p>Short and straight, then the call is yours.</p>
+          <div class="verdicts"><span class="pill">Improves your odds</span><span class="pill">Hurts your odds</span><span class="pill">No real difference</span></div></div></div>
+      </div>
+      <p class="lede" style="margin-top:20px">Most everyday choices land on "no real difference," and it will tell you that briefly instead of inventing stakes.</p>
+    </div>
+  </section>
+
+  <section id="wont">
+    <div class="wrap">
+      <h2>What it won't do</h2>
+      <p class="lede">It's openly a tool. It reminds you that your own judgment outranks any bot's, including its own.</p>
+      <ul class="wont">
+        <li><b>Decide for you.</b> You make the final call. On a real no-win choice, it lays out the tradeoff and leaves the decision with you.</li>
+        <li><b>Act on your behalf.</b> It never places calls, buys, signs up for, or contacts anyone for you. It can draft something, and you decide.</li>
+        <li><b>Promise results.</b> No guarantees, no made-up percentages, no get-rich-quick or guaranteed-return money advice.</li>
+        <li><b>Hook you.</b> No streaks, guilt, fake urgency, or tricks to keep you coming back.</li>
+      </ul>
+      <div class="help"><b>If you're in crisis:</b> in the US, call or text <b>988</b> (Suicide &amp; Crisis Lifeline). If you're in immediate danger, call <b>911</b> or your local emergency number. The bot will point you there too, but it can't call for you.</div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Try it on your next choice.</h2>
+      <p>Tell it one goal. Ask it about one thing you're deciding today.</p>
+      <a class="btn" href="https://x.ai/bot/zJNAdJq5w03aPWeegxiwk">Get the bot</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Improve My Odds</b>, built by Eclipse Engine. Runs on Grok Bot.</p>
+    <p>General information only. Not professional financial, medical, or legal advice.</p>
+    <p>&copy; 2026 Eclipse Engine</p>
+  </div>
+</footer>
+
+</body>
+</html>
